@@ -28,7 +28,6 @@ const WIT_TOKEN = "DHCPUUCGWOAGZEGATVEQ4L6C6MS5YSPQ"
 const FB_PAGE_TOKEN =  "EAAFY2nGfp1UBADQUmIFKZBMDfeUJYydeCOGsZCALevZChhTfK1imhiTOR3CMqfaLECgyOwkW3kQ2b6TlBa8xE4tdmh6jBpjP9BWj3vZCTYbZCLEwMnVp3anaFWGYvtGLle0ahT7IQGr95k46SZAcpIov5rYj4NAuZBXUgQQEYwEDwZDZD"
 if (!FB_PAGE_TOKEN) { throw new Error('missing FB_PAGE_TOKEN') }
 const FB_APP_SECRET = "070f7b1b7ba24f6908173ec4996b297a";
-if (!FB_APP_SECRET) { throw new Error('missing FB_APP_SECRET') }
 
 let FB_VERIFY_TOKEN = "my_voice_is_my_password_verify_me";
 crypto.randomBytes(8, (err, buff) => {
