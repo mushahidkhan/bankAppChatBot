@@ -1,10 +1,10 @@
 'use strict';
 
-const bodyParser = require('body-parser');
-const crypto = require('crypto');
-const express = require('express');
-const fetch = require('node-fetch');
-const request = require('request');
+var bodyParser = require('body-parser');
+var crypto = require('crypto');
+var express = require('express');
+var fetch = require('node-fetch');
+var request = require('request');
 
 let Wit = null;
 let log = null;
@@ -18,16 +18,16 @@ try {
 }
 
 // Webserver parameter
-const PORT =  8445;
+var PORT =  8445;
 
 // Wit.ai parameters
-const WIT_TOKEN = "DHCPUUCGWOAGZEGATVEQ4L6C6MS5YSPQ"
+var WIT_TOKEN = "DHCPUUCGWOAGZEGATVEQ4L6C6MS5YSPQ"
 
 
 // Messenger API parameters
-const FB_PAGE_TOKEN =  "EAAFY2nGfp1UBADQUmIFKZBMDfeUJYydeCOGsZCALevZChhTfK1imhiTOR3CMqfaLECgyOwkW3kQ2b6TlBa8xE4tdmh6jBpjP9BWj3vZCTYbZCLEwMnVp3anaFWGYvtGLle0ahT7IQGr95k46SZAcpIov5rYj4NAuZBXUgQQEYwEDwZDZD"
+var FB_PAGE_TOKEN =  "EAAFY2nGfp1UBADQUmIFKZBMDfeUJYydeCOGsZCALevZChhTfK1imhiTOR3CMqfaLECgyOwkW3kQ2b6TlBa8xE4tdmh6jBpjP9BWj3vZCTYbZCLEwMnVp3anaFWGYvtGLle0ahT7IQGr95k46SZAcpIov5rYj4NAuZBXUgQQEYwEDwZDZD"
 if (!FB_PAGE_TOKEN) { throw new Error('missing FB_PAGE_TOKEN') }
-const FB_APP_SECRET = "070f7b1b7ba24f6908173ec4996b297a"
+var FB_APP_SECRET = "070f7b1b7ba24f6908173ec4996b297a"
 if (!FB_APP_SECRET) { throw new Error('missing FB_APP_SECRET') }
 
 let FB_VERIFY_TOKEN = "my_voice_is_my_password_verify_me";
@@ -43,12 +43,12 @@ crypto.randomBytes(8, (err, buff) => {
 // See the Send API reference
 // https://developers.facebook.com/docs/messenger-platform/send-api-reference
 
-const fbMessage = (id, text) => {
-  const body = JSON.stringify({
+var fbMessage = (id, text) => {
+  var body = JSON.stringify({
     recipient: { id },
     message: { text },
   });
-  const qs = 'access_token=' + encodeURIComponent(FB_PAGE_TOKEN);
+  var qs = 'access_token=' + encodeURIComponent(FB_PAGE_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -69,9 +69,9 @@ const fbMessage = (id, text) => {
 // This will contain all user sessions.
 // Each session has an entry:
 // sessionId -> {fbid: facebookUserId, context: sessionState}
-const sessions = {};
+var sessions = {};
 
-const findOrCreateSession = (fbid) => {
+var findOrCreateSession = (fbid) => {
   let sessionId;
   // Let's see if we already have a session for the user fbid
   Object.keys(sessions).forEach(k => {
@@ -89,11 +89,11 @@ const findOrCreateSession = (fbid) => {
 };
 
 // Our bot actions
-const actions = {
+var actions = {
   send({sessionId}, {text}) {
     // Our bot has something to say!
     // Let's retrieve the Facebook user whose session belongs to
-    const recipientId = sessions[sessionId].fbid;
+    var recipientId = sessions[sessionId].fbid;
     if (recipientId) {
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
@@ -130,14 +130,14 @@ getCheckingAccountBalance({context, entities}) {
 };
 
 // Setting up our bot
-const wit = new Wit({
+var wit = new Wit({
   accessToken: WIT_TOKEN,
   actions,
   logger: new log.Logger(log.INFO)
 });
 
 // Starting our webserver and putting it all together
-const app = express();
+var app = express();
 app.use(({method, url}, rsp, next) => {
   rsp.on('finish', () => {
     console.log(`${rsp.statusCode} ${method} ${url}`);
@@ -161,7 +161,7 @@ app.post('/webhook', (req, res) => {
   // Parse the Messenger payload
   // See the Webhook reference
   // https://developers.facebook.com/docs/messenger-platform/webhook-reference
-  const data = req.body;
+  var data = req.body;
 
   if (data.object === 'page') {
     data.entry.forEach(entry => {
@@ -169,14 +169,14 @@ app.post('/webhook', (req, res) => {
         if (event.message && !event.message.is_echo) {
           // Yay! We got a new message!
           // We retrieve the Facebook user ID of the sender
-          const sender = event.sender.id;
+          var sender = event.sender.id;
 
           // We retrieve the user's current session, or create one if it doesn't exist
           // This is needed for our bot to figure out the conversation history
-          const sessionId = findOrCreateSession(sender);
+          var sessionId = findOrCreateSession(sender);
 
           // We retrieve the message content
-          const {text, attachments} = event.message;
+          var {text, attachments} = event.message;
 
           if (attachments) {
             // We received an attachment
