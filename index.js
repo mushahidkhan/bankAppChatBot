@@ -249,6 +249,8 @@ function verifyRequestSignature(req, res, buf) {
     }
   }
 }
-
+app.get('/', function (req, res) {
+  res.render('index', {});
+});
 app.listen(PORT);
 console.log('Listening on :' + PORT + '...');
