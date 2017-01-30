@@ -249,7 +249,7 @@ function verifyRequestSignature(req, res, buf) {
     }
   }
 }
-app.get('/', function (req, res) {
+app.get('/index', function (req, res) {
   res.render('index', {});
 });
 app.listen(PORT);
