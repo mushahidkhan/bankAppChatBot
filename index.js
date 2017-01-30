@@ -18,7 +18,7 @@ try {
 }
 
 // Webserver parameter
-var PORT =  process.env.PORT || 8445;;
+var PORT =  process.env.PORT || 5000;
 
 // Wit.ai parameters
 var WIT_TOKEN = "DHCPUUCGWOAGZEGATVEQ4L6C6MS5YSPQ"
